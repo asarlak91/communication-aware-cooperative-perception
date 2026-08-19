@@ -1,0 +1,15 @@
+{
+  "weights": "/home/asarlak/communication-aware-cooperative-perception/results/training/yolov8_pedestrian/weights/best.pt",
+  "split": "test",
+  "num_scenes": 25,
+  "selected_helper": "h1",
+  "alphas": {
+    "h1": 0.9,
+    "h2": 0.75,
+    "h3": 0.55
+  },
+  "grid": 4,
+  "conf": 0.25,
+  "iou_threshold": 0.5,
+  "seed": 42
+}

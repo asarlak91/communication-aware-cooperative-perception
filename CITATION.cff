@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the associated paper."
+title: "Communication-Aware Cooperative Perception: Python Reimplementation"
+type: software
+authors:
+  - family-names: Sarlak
+    given-names: Ahmad
+preferred-citation:
+  type: article
+  title: "Extended visibility of autonomous vehicles via optimized cooperative perception under imperfect communication"
+  authors:
+    - family-names: Sarlak
+      given-names: Ahmad
+    - family-names: Amin
+      given-names: Rahul
+    - family-names: Razi
+      given-names: Abolfazl
+  journal: "Transportation Research Part C: Emerging Technologies"
+  volume: 180
+  year: 2025
+  doi: "10.1016/j.trc.2025.105350"
