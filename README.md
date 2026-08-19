@@ -6,13 +6,12 @@ A clean Python reimplementation of the core methodology and selected experiments
 Transportation Research Part C 180 (2025) 105350  
 DOI: https://doi.org/10.1016/j.trc.2025.105350
 
-The repository connects three parts of the paper in one modular pipeline:
+The repository connects 2 parts of the paper in one modular pipeline:
 
 1. **Helper selection** from vehicle location, visual range, and motion blur.
-2. **C-V2X communication/resource allocation** under sensing outages and RB collisions.
-3. **YOLOv8 late fusion** using detections from successfully received helper transmissions.
+2. **YOLOv8 late fusion** using detections from successfully received helper transmissions.
 
-> **Reimplementation note.** This is a reconstructed Python implementation for reproducibility and demonstration. It is not the historical MATLAB/CARLA codebase used to generate every result in the publication.
+> **Reimplementation note.** This is a reconstructed Python implementation for reproducibility and demonstration. It is not the historical MATLAB/CARLA and Communication and resource allocation codebase used to generate every result in the publication.
 
 ## Method
 
@@ -29,68 +28,20 @@ The composite objective is represented as a fractional program and solved with a
 - `exact`: exact enumeration of the binary Dinkelbach subproblem for small `N` (recommended for the paper-scale `N=10` experiments and for validation),
 - `sdp`: a lifted semidefinite relaxation of the nonconvex binary QCQP, followed by deterministic rounding and one-swap local improvement. This option requires `cvxpy` and an SDP-capable solver.
 
-### Stage 2: Communication and resource allocation
 
-The communication model includes:
-
-- RB collision probability,
-- distance-dependent path loss,
-- log-normal shadowing through sensing-outage probability,
-- power and RB allocation.
-
-The implementation uses the author-specified packet-success composition:
-
-```text
-P_success = (1 - delta_col) * (1 - delta_sen)
-```
-
-Resource allocation uses a **Dinkelbach outer loop + Frank-Wolfe inner loop**. Power is optimized in linear mW units and converted to dBm for the channel model.
-
-### Stage 3: Perception and late fusion
+### Stage 2: Perception and late fusion
 
 When images are supplied, the pipeline runs actual Ultralytics YOLOv8 inference independently on the ego image and helper images. Detections from failed helper transmissions are removed, and surviving detections are combined with class-wise IoU/NMS late fusion.
 
 The late-fusion implementation assumes helper detections are expressed in a common reference/image coordinate system or have already been aligned.
 
-## Repository structure
-
-```text
-communication-aware-cooperative-perception/
-|-- README.md
-|-- requirements.txt
-|-- .gitignore
-|-- CITATION.cff
-|-- core/
-|   |-- __init__.py
-|   |-- scenario.py
-|   |-- perception_metrics.py
-|   |-- helper_selection.py
-|   |-- cv2x_channel.py
-|   |-- resource_allocation.py
-|   |-- perception_fusion.py
-|   `-- evaluation.py
-|-- sample_data/
-|   `-- README.md
-|-- results/
-|   |-- published_figure_objective.png
-|   |-- published_table2.png
-|   |-- published_table3.png
-|   `-- published_table4.png
-|-- tests/
-|   `-- test_core.py
-|-- run_pipeline.py
-`-- run_benchmarks.py
-```
-
 ## Installation
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Quick start: optimization + communication
+## Quick start: optimization
 
 This path does not require images or YOLO weights:
 
